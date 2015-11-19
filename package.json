@@ -2,6 +2,7 @@
   "name": "launchpad-client",
   "version": "0.0.0",
   "description": "Launchpad Api",
+  "main": "src/node.js",
   "scripts": {
     "test": "gulp test"
   },
@@ -28,6 +29,7 @@
     "karma-mocha": "^0.2.0",
     "karma-sinon": "^1.0.4",
     "karma-source-map-support": "1.0.0",
+    "request": "2.67.0",
     "mocha": "^2.2.5",
     "run-sequence": "^1.1.0",
     "sinon": "^1.14.1"

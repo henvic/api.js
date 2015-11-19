@@ -97,6 +97,10 @@ class Launchpad {
 	 * @param {*} value
 	 */
 	form(name, value) {
+		if (!window) {
+			throw new Error('form method is only available on browsers.');
+		}
+
 		if (!this.formData_) {
 			this.formData_ = new FormData();
 		}
@@ -403,7 +407,7 @@ class Launchpad {
 			body = null;
 		}
 
-		if (body instanceof FormData) {
+		if (typeof FormData !== 'undefined' && body instanceof FormData) {
 			clientRequest.headers().remove('content-type');
 		} else if (body instanceof Embodied) {
 			clientRequest.body(body.toString());
