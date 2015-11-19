@@ -195,6 +195,23 @@ this.launchpadNamed = this.launchpadNamed || {};
 			}
 
 			/**
+    * Gets the name of the given function. If the current browser doesn't
+    * support the `name` property, this will calculate it from the function's
+    * content string.
+    * @param {!function()} fn
+    * @return {string}
+    */
+		}, {
+			key: 'getFunctionName',
+			value: function getFunctionName(fn) {
+				if (!fn.name) {
+					var str = fn.toString();
+					fn.name = str.substring(9, str.indexOf('('));
+				}
+				return fn.name;
+			}
+
+			/**
     * Gets an unique id. If `opt_object` argument is passed, the object is
     * mutated with an unique id. Consecutive calls with the same object
     * reference won't mutate the object again, instead the current object uid
@@ -4029,7 +4046,114 @@ this.launchpadNamed = this.launchpadNamed || {};
 (function () {
 	'use strict';
 
-	var AjaxTransport = this.launchpad.AjaxTransport;
+	var core = this.launchpad.core;
+	var Transport = this.launchpad.Transport;
+	var Util = this.launchpad.Util;
+	var ClientResponse = this.launchpad.ClientResponse;
+	var CancellablePromise = this.launchpadNamed.Promise.CancellablePromise;
+
+	var http = require('http');
+	var _request = require('request');
+
+	/**
+  * Provides a convenient interface for data transport.
+  * @interface
+  */
+
+	var NodeTransport = (function (_Transport) {
+		babelHelpers.inherits(NodeTransport, _Transport);
+
+		function NodeTransport() {
+			babelHelpers.classCallCheck(this, NodeTransport);
+
+			babelHelpers.get(Object.getPrototypeOf(NodeTransport.prototype), 'constructor', this).call(this);
+		}
+
+		/**
+   * @inheritDoc
+   */
+		babelHelpers.createClass(NodeTransport, [{
+			key: 'send',
+			value: function send(clientRequest) {
+				var deferred = this.request(clientRequest.url(), clientRequest.method(), clientRequest.body(), clientRequest.headers(), clientRequest.params(), null, false);
+
+				return deferred.then(function (response) {
+					var clientResponse = new ClientResponse(clientRequest);
+					clientResponse.body(response.body);
+					clientResponse.statusCode(response.statusCode);
+					clientResponse.statusText(http.STATUS_CODES[response.statusCode]);
+
+					Object.keys(response.headers).forEach(function (name) {
+						clientResponse.header(name, response.headers[name]);
+					});
+
+					return clientResponse;
+				});
+			}
+
+			/**
+    * Requests the url using XMLHttpRequest.
+    * @param {!string} url
+    * @param {!string} method
+    * @param {?string} body
+    * @param {MultiMap} opt_headers
+    * @param {MultiMap} opt_params
+    * @param {number=} opt_timeout
+    * @return {Promise} Deferred ajax request.
+    * @protected
+    */
+		}, {
+			key: 'request',
+			value: function request(url, method, body, opt_headers, opt_params, opt_timeout) {
+				var options = {
+					method: method,
+					uri: url
+				};
+
+				if (opt_params) {
+					url = Util.addParametersToUrlQueryString(url, opt_params);
+				}
+
+				if (opt_headers) {
+					(function () {
+						var headers = {};
+						opt_headers.names().forEach(function (name) {
+							headers[name] = opt_headers.getAll(name).join(', ');
+						});
+
+						options.headers = headers;
+					})();
+				}
+
+				if (core.isDef(body)) {
+					options.body = body;
+				}
+
+				if (core.isDefAndNotNull(opt_timeout)) {
+					options.timeout(opt_timeout);
+				}
+
+				return new CancellablePromise(function (resolve, reject) {
+					_request(options, function (error, response) {
+						if (error) {
+							reject(error);
+							return;
+						}
+
+						resolve(response);
+					});
+				});
+			}
+		}]);
+		return NodeTransport;
+	})(Transport);
+
+	this.launchpad.NodeTransport = NodeTransport;
+}).call(this);
+(function () {
+	'use strict';
+
+	var NodeTransport = this.launchpad.NodeTransport;
 
 	/**
   * Provides a factory for data transport.
@@ -4040,7 +4164,7 @@ this.launchpadNamed = this.launchpadNamed || {};
 			babelHelpers.classCallCheck(this, TransportFactory);
 
 			this.transports = {};
-			this.transports[TransportFactory.DEFAULT_TRANSPORT_NAME] = AjaxTransport;
+			this.transports[TransportFactory.DEFAULT_TRANSPORT_NAME] = NodeTransport;
 		}
 
 		/**
@@ -4051,7 +4175,7 @@ this.launchpadNamed = this.launchpadNamed || {};
 			value: function get(implementationName) {
 				var TransportClass = this.transports[implementationName];
 
-				if (TransportClass === null) {
+				if (!TransportClass) {
 					throw new Error('Invalid transport name: ' + implementationName);
 				}
 
@@ -4182,6 +4306,27 @@ this.launchpadNamed = this.launchpadNamed || {};
 			key: 'delete',
 			value: function _delete(opt_body) {
 				return this.sendAsync('DELETE', opt_body);
+			}
+
+			/**
+    * Adds a key/value pair to be sent via the body in a `multipart/form-data` format.
+    * If the body is set by other means (for example, through the `body` method), this
+    * will be ignored.
+    * @param {string} name
+    * @param {*} value
+    */
+		}, {
+			key: 'form',
+			value: function form(name, value) {
+				if (!window) {
+					throw new Error('form method is only available on browsers.');
+				}
+
+				if (!this.formData_) {
+					this.formData_ = new FormData();
+				}
+				this.formData_.append(name, value);
+				return this;
 			}
 
 			/**
@@ -4427,6 +4572,13 @@ this.launchpadNamed = this.launchpadNamed || {};
 				this.getOrCreateQuery_().sort(field, opt_direction);
 				return this;
 			}
+
+			/**
+    * Gets the currently used `Query` object. If none exists yet,
+    * a new one is created.
+    * @return {Query}
+    * @protected
+    */
 		}, {
 			key: 'getOrCreateQuery_',
 			value: function getOrCreateQuery_() {
@@ -4474,6 +4626,8 @@ this.launchpadNamed = this.launchpadNamed || {};
 				if (!core.isDefAndNotNull(clientRequest.body())) {
 					if (this.query_) {
 						clientRequest.body(this.query_.body());
+					} else if (this.formData_) {
+						clientRequest.body(this.formData_);
 					}
 				}
 
@@ -4524,7 +4678,7 @@ this.launchpadNamed = this.launchpadNamed || {};
 					body = null;
 				}
 
-				if (body instanceof FormData) {
+				if (typeof FormData !== 'undefined' && body instanceof FormData) {
 					clientRequest.headers().remove('content-type');
 				} else if (body instanceof Embodied) {
 					clientRequest.body(body.toString());
