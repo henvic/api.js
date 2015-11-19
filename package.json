@@ -1,8 +1,8 @@
 {
-  "name": "launchpad-client",
-  "version": "0.0.0",
+  "name": "launchpad-client-brunobasto",
+  "version": "0.0.3",
   "description": "Launchpad Api",
-  "main": "src/node.js",
+  "main": "build/globals/api.js",
   "scripts": {
     "test": "gulp test"
   },
@@ -12,6 +12,9 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/liferay-apps/api.js.git"
+  },
+  "dependencies": {
+    "request": "^2.67.0"
   },
   "devDependencies": {
     "chai": "^2.3.0",
@@ -29,7 +32,6 @@
     "karma-mocha": "^0.2.0",
     "karma-sinon": "^1.0.4",
     "karma-source-map-support": "1.0.0",
-    "request": "2.67.0",
     "mocha": "^2.2.5",
     "run-sequence": "^1.1.0",
     "sinon": "^1.14.1"
