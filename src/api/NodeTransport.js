@@ -53,14 +53,14 @@ class NodeTransport extends Transport {
 	 * @protected
 	 */
 	request(url, method, body, opt_headers, opt_params, opt_timeout) {
+		if (opt_params) {
+			url = Util.addParametersToUrlQueryString(url, opt_params);
+		}
+
 		var options = {
 			method: method,
 			uri: url
 		};
-
-		if (opt_params) {
-			url = Util.addParametersToUrlQueryString(url, opt_params);
-		}
 
 		if (opt_headers) {
 			let headers = {};
