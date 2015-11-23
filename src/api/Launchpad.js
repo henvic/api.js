@@ -96,6 +96,10 @@ class Launchpad {
 	 * @param {*} value
 	 */
 	form(name, value) {
+		if (typeof window === 'undefined') {
+			throw new Error('form method is only available on browsers.');
+		}
+
 		if (!this.formData_) {
 			this.formData_ = new FormData();
 		}
