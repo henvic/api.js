@@ -39,11 +39,10 @@ class AjaxTransport extends Transport {
 	 * @param {MultiMap} opt_headers
 	 * @param {MultiMap} opt_params
 	 * @param {number=} opt_timeout
-	 * @param {boolean=} opt_sync
 	 * @return {Promise} Deferred ajax request.
 	 * @protected
 	 */
-	request(url, method, body, opt_headers, opt_params, opt_timeout, opt_sync) {
+	request(url, method, body, opt_headers, opt_params, opt_timeout) {
 		var request = new XMLHttpRequest();
 
 		var promise = new Promise(function(resolve, reject) {
@@ -70,7 +69,7 @@ class AjaxTransport extends Transport {
 			url = Util.addParametersToUrlQueryString(url, opt_params);
 		}
 
-		request.open(method, url, !opt_sync);
+		request.open(method, url);
 
 		if (opt_headers) {
 			opt_headers.names().forEach(function(name) {
