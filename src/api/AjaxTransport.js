@@ -3,7 +3,7 @@
 import Transport from './Transport';
 import Util from './Util';
 import ClientResponse from './ClientResponse';
-import { CancellablePromise as Promise } from 'bower:metal-promise/src/promise/Promise';
+import CancellablePromise from 'bower:metal-promise/src/promise/Promise';
 
 /**
  * Provides a convenient interface for data transport.
@@ -43,13 +43,13 @@ class AjaxTransport extends Transport {
 	 * @param {MultiMap} opt_headers
 	 * @param {MultiMap} opt_params
 	 * @param {number=} opt_timeout
-	 * @return {Promise} Deferred ajax request.
+	 * @return {CancellablePromise} Deferred ajax request.
 	 * @protected
 	 */
 	request(url, method, body, opt_headers, opt_params, opt_timeout) {
 		var request = new XMLHttpRequest();
 
-		var promise = new Promise(function(resolve, reject) {
+		var promise = new CancellablePromise(function(resolve, reject) {
 			request.onload = function() {
 				if (request.aborted) {
 					request.onerror();
