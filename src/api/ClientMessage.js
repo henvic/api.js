@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import MultiMap from './MultiMap';
 
 /**
@@ -18,7 +17,7 @@ class ClientMessage {
 	 * @chainable Chainable when used for setter.
 	 */
 	body(opt_body) {
-		if (core.isDef(opt_body)) {
+		if (opt_body) {
 			this.body_ = opt_body;
 			return this;
 		}
@@ -47,7 +46,7 @@ class ClientMessage {
 	 * @return {MultiMap} Returns map of request headers.
 	 */
 	headers(opt_headers) {
-		if (core.isDef(opt_headers)) {
+		if (opt_headers) {
 			if (opt_headers instanceof MultiMap) {
 				this.headers_ = opt_headers;
 			} else {

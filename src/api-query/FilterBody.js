@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import Embodied from './Embodied';
 
 /**
@@ -19,10 +18,10 @@ class FilterBody {
 	 */
 	constructor(field, operatorOrValue, opt_value) {
 		var obj = {
-			operator: core.isDef(opt_value) ? operatorOrValue : '='
+			operator: (opt_value !== undefined) ? operatorOrValue : '='
 		};
-		var value = core.isDef(opt_value) ? opt_value : operatorOrValue;
-		if (core.isDefAndNotNull(value)) {
+		var value = (opt_value !== undefined) ? opt_value : operatorOrValue;
+		if (value !== undefined && value !== null) {
 			if (value instanceof Embodied) {
 				value = value.body();
 			}

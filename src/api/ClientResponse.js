@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import ClientMessage from './ClientMessage';
 
 /**
@@ -29,7 +28,7 @@ class ClientResponse extends ClientMessage {
 	 * @return {number} Returns response status code.
 	 */
 	statusCode(opt_statusCode) {
-		if (core.isDef(opt_statusCode)) {
+		if (opt_statusCode) {
 			this.statusCode_ = opt_statusCode;
 			return this;
 		}
@@ -42,7 +41,7 @@ class ClientResponse extends ClientMessage {
 	 * @return {string} Returns response status text.
 	 */
 	statusText(opt_statusText) {
-		if (core.isDef(opt_statusText)) {
+		if (opt_statusText) {
 			this.statusText_ = opt_statusText;
 			return this;
 		}

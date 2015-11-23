@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import ClientMessage from './ClientMessage';
 import MultiMap from './MultiMap';
 
@@ -20,7 +19,7 @@ class ClientRequest extends ClientMessage {
 	 * @chainable Chainable when used for setter.
 	 */
 	method(opt_method) {
-		if (core.isDef(opt_method)) {
+		if (opt_method) {
 			this.method_ = opt_method;
 			return this;
 		}
@@ -48,7 +47,7 @@ class ClientRequest extends ClientMessage {
 	 * @return {MultiMap} Returns map of request querystring.
 	 */
 	params(opt_params) {
-		if (core.isDef(opt_params)) {
+		if (opt_params) {
 			if (opt_params instanceof MultiMap) {
 				this.params_ = opt_params;
 			} else {
@@ -67,7 +66,7 @@ class ClientRequest extends ClientMessage {
 	 * TODO: Renames on api.java as well.
 	 */
 	url(opt_url) {
-		if (core.isDef(opt_url)) {
+		if (opt_url) {
 			this.url_ = opt_url;
 			return this;
 		}

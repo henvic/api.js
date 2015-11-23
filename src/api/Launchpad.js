@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import Embodied from '../api-query/Embodied';
 import Filter from '../api-query/Filter';
 import Query from '../api-query/Query';
@@ -330,7 +329,7 @@ class Launchpad {
 	 * @protected
 	 */
 	convertBodyToParams_(clientRequest, body) {
-		if (core.isString(body)) {
+		if (typeof body === 'string') {
 			body = {
 				body: body
 			};
@@ -352,7 +351,7 @@ class Launchpad {
 
 		clientRequest.body(body || this.body_);
 
-		if (!core.isDefAndNotNull(clientRequest.body())) {
+		if (!clientRequest.body()) {
 			if (this.query_) {
 				clientRequest.body(this.query_.body());
 			} else if (this.formData_) {
@@ -391,7 +390,7 @@ class Launchpad {
 	encode(clientRequest) {
 		var body = clientRequest.body();
 
-		if (core.isElement(body)) {
+		if (typeof body === 'object' && body.nodeType === 1) {
 			body = new FormData(body);
 			clientRequest.body(body);
 		}
@@ -428,7 +427,7 @@ class Launchpad {
 			values.forEach(function(value, index) {
 				if (value instanceof Embodied) {
 					value = value.toString();
-				} else if (core.isObject(value) || (value instanceof Array)) {
+				} else if (typeof value === 'object' || (value instanceof Array)) {
 					value = JSON.stringify(value);
 				}
 				values[index] = value;

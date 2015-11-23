@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import Transport from './Transport';
 import Util from './Util';
 import ClientResponse from './ClientResponse';
@@ -83,9 +82,9 @@ class AjaxTransport extends Transport {
 			});
 		}
 
-		request.send(core.isDef(body) ? body : null);
+		request.send(body ? body : null);
 
-		if (core.isDefAndNotNull(opt_timeout)) {
+		if (opt_timeout) {
 			var timeout = setTimeout(function() {
 				promise.cancel('Request timeout');
 			}, opt_timeout);
