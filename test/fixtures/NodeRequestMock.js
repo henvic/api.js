@@ -1,15 +1,13 @@
 'use strict';
 
-import RequestMock from '../RequestMock';
-
-var url = require('url');
-var assert = require('assert');
-var nock = require('nock');
-
 class NodeRequestMock {
+	static inject(name, module) {
+		NodeRequestMock[name] = module;
+	}
+
 	static intercept(verb, address, requestBody) {
-		var u = url.parse(address);
-		NodeRequestMock.scope = nock(u.protocol + '//' + u.hostname).intercept(u.path, verb, requestBody);
+		var u = NodeRequestMock.url.parse(address);
+		NodeRequestMock.scope = NodeRequestMock.nock(u.protocol + '//' + u.hostname).intercept(u.path, verb, requestBody);
 		return NodeRequestMock.scope;
 	}
 
@@ -32,10 +30,8 @@ class NodeRequestMock {
 
 	static teardown() {
 		NodeRequestMock.scope = undefined;
-		nock.cleanAll();
+		NodeRequestMock.nock.cleanAll();
 	}
 }
 
-RequestMock.set(NodeRequestMock);
-
-global.assert = assert;
+export default NodeRequestMock;

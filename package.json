@@ -13,6 +13,9 @@
     "type": "git",
     "url": "http://github.com/liferay-apps/api.js.git"
   },
+  "dependencies": {
+    "request": "^2.67.0"
+  },
   "devDependencies": {
     "bower": "^1.6.8",
     "chai": "^2.3.0",
