@@ -7,9 +7,6 @@
   "esnext": true,
   "evil": false,
   "forin": false,
-  "globals": {
-    "io": true
-  },
   "immed": true,
   "indent": 2,
   "lastsemic": false,
