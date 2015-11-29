@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Launchpad Api",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test:node && gulp test:coverage",
     "postinstall": "./node_modules/.bin/bower install"
   },
   "keywords": [
