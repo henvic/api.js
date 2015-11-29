@@ -133,16 +133,4 @@ describe('AjaxTransport', function() {
 		});
 		this.requests[0].respond(500);
 	});
-
-	it('should fail on transport error', function(done) {
-		var transport = new AjaxTransport();
-		var clientRequest = new ClientRequest();
-		clientRequest.url('/url');
-		transport.send(clientRequest).catch(function(reason) {
-			assert.ok(reason instanceof Error);
-			done();
-		});
-		this.requests[0].abort();
-	});
-
 });
