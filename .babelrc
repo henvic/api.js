@@ -1,0 +1,4 @@
+{
+  "presets": ["metal"],
+  "sourceMaps": "both"
+}

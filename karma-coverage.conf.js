@@ -1,49 +1,43 @@
+var fs = require('fs');
 var isparta = require('isparta');
-var metal = require('gulp-metal');
-
-var babelOptions = {
-  resolveModuleSource: metal.renameAlias,
-  sourceMap: 'both'
-};
 
 module.exports = function (config) {
-  config.set({
-    frameworks: ['mocha', 'chai', 'sinon', 'source-map-support', 'commonjs'],
+	config.set({
+		frameworks: ['mocha', 'chai', 'sinon', 'source-map-support', 'commonjs'],
 
-    files: [
-      'bower_components/metal/**/*.js',
-      'bower_components/metal-ajax/**/*.js',
-      'bower_components/metal-promise/**/*.js',
-      'bower_components/metal-multimap/**/*.js',
-      'bower_components/soyutils/soyutils.js',
-      'src/**/*.js',
-      'test/**/*.js'
-    ],
+		files: [
+			'bower_components/soyutils/soyutils.js',
+			'bower_components/metal/src/**/*.js',
+			'bower_components/metal-*/src/**/*.js',
+			'src/**/*.js',
+			'test/enviroment/browser/env.js',
+			'test/**/*.js'
+		],
 
-    preprocessors: {
-      'bower_components/metal/**/*.js': ['babel', 'commonjs'],
-      'bower_components/metal-ajax/**/*.js': ['babel', 'commonjs'],
-      'bower_components/metal-promise/**/*.js': ['babel', 'commonjs'],
-      'bower_components/metal-multimap/**/*.js': ['babel', 'commonjs'],
-      'src/**/*.js': ['coverage', 'commonjs'],
-      'test/**/*.js': ['babel', 'commonjs']
-    },
+		exclude: [
+			'src/**/node/**/*.js',
+			'test/**/node/**/*.js'
+		],
 
-    browsers: ['Chrome'],
+		preprocessors: {
+			'src/**/!(*.soy).js': ['coverage', 'commonjs'],
+			'src/**/*.soy.js': ['babel', 'commonjs'],
+			'bower_components/metal/**/*.js': ['babel', 'commonjs'],
+			'bower_components/metal-*/**/*.js': ['babel', 'commonjs'],
+			'test/**/*.js': ['babel', 'commonjs']
+		},
 
-    reporters: ['coverage', 'progress'],
+		browsers: ['Chrome'],
 
-    babelPreprocessor: {options: babelOptions},
+		reporters: ['coverage', 'progress'],
 
-    coverageReporter: {
-      instrumenters: {isparta : isparta},
-      instrumenter: {'**/*.js': 'isparta'},
-      instrumenterOptions: {isparta: {babel: babelOptions}},
-      reporters: [
-        {type: 'html'},
-        {type: 'lcov', subdir: 'lcov'},
-        {type: 'text-summary'}
-      ]
-    }
-  });
+		coverageReporter: {
+			instrumenters: {isparta : isparta},
+			instrumenter: {'**/*.js': 'isparta'},
+			reporters: [
+				{type: 'lcov', subdir: 'lcov'},
+				{type: 'text-summary'}
+			]
+		}
+	});
 };

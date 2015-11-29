@@ -1,14 +1,12 @@
 'use strict';
 
-import AjaxTransport from './AjaxTransport';
-
 /**
  * Provides a factory for data transport.
  */
 class TransportFactory {
 	constructor() {
 		this.transports = {};
-		this.transports[TransportFactory.DEFAULT_TRANSPORT_NAME] = AjaxTransport;
+		this.transports[TransportFactory.DEFAULT_TRANSPORT_NAME] = TransportFactory[TransportFactory.DEFAULT_TRANSPORT_NAME];
 	}
 
 	/**
