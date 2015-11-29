@@ -485,7 +485,7 @@ class Launchpad {
 	 * @return {!io} Socket IO reference. Server events can be listened on it.
 	 */
 	watch(opt_params, opt_options) {
-		if (typeof io === 'undefined') {
+		if (typeof Launchpad.io === 'undefined') {
 			throw new Error('Socket.io client not loaded');
 		}
 
@@ -499,7 +499,7 @@ class Launchpad {
 		};
 		opt_options.path = opt_options.path || url[1];
 
-		return io(url[0] + '?url=' + encodeURIComponent(url[1] + url[2]), opt_options);
+		return Launchpad.io(url[0] + '?url=' + encodeURIComponent(url[1] + url[2]), opt_options);
 	}
 
 	/**

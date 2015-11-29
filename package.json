@@ -14,6 +14,7 @@
     "url": "http://github.com/liferay-apps/api.js.git"
   },
   "dependencies": {
+    "socket.io-client": "^1.3.7",
     "request": "^2.67.0"
   },
   "devDependencies": {
