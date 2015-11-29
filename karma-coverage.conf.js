@@ -1,49 +1,11 @@
-var isparta = require('isparta');
-var metal = require('gulp-metal');
-
-var babelOptions = {
-  resolveModuleSource: metal.renameAlias,
-  sourceMap: 'both'
-};
+var metalKarmaConfig = require('metal-karma-config/coverage');
 
 module.exports = function (config) {
-  config.set({
-    frameworks: ['mocha', 'chai', 'sinon', 'source-map-support', 'commonjs'],
-
-    files: [
-      'bower_components/metal/**/*.js',
-      'bower_components/metal-ajax/**/*.js',
-      'bower_components/metal-promise/**/*.js',
-      'bower_components/metal-multimap/**/*.js',
-      'bower_components/soyutils/soyutils.js',
-      'src/**/*.js',
-      'test/**/*.js'
-    ],
-
-    preprocessors: {
-      'bower_components/metal/**/*.js': ['babel', 'commonjs'],
-      'bower_components/metal-ajax/**/*.js': ['babel', 'commonjs'],
-      'bower_components/metal-promise/**/*.js': ['babel', 'commonjs'],
-      'bower_components/metal-multimap/**/*.js': ['babel', 'commonjs'],
-      'src/**/*.js': ['coverage', 'commonjs'],
-      'test/**/*.js': ['babel', 'commonjs']
-    },
-
-    browsers: ['Chrome'],
-
-    reporters: ['coverage', 'progress'],
-
-    babelPreprocessor: {options: babelOptions},
-
-    coverageReporter: {
-      instrumenters: {isparta : isparta},
-      instrumenter: {'**/*.js': 'isparta'},
-      instrumenterOptions: {isparta: {babel: babelOptions}},
-      reporters: [
-        {type: 'html'},
-        {type: 'lcov', subdir: 'lcov'},
-        {type: 'text-summary'}
-      ]
-    }
-  });
+	metalKarmaConfig(config);
+	config.files.unshift('envs/browser-test.js');
+	config.files.push('envs/browser.js');
+	config.exclude.push('src/api/NodeTransport.js');
+	config.exclude.push('test/api/NodeTransport.js');
+	config.exclude.push('test/fixtures/NodeRequestMock.js');
+	config.preprocessors['envs/**/*.js'] = ['babel', 'commonjs'];
 };
