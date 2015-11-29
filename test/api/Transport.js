@@ -134,57 +134,5 @@ describe('AjaxTransport', function() {
 		this.requests[0].respond(500);
 	});
 
-	it('should fail on transport error', function(done) {
-		var transport = new AjaxTransport();
-		var clientRequest = new ClientRequest();
-		clientRequest.url('/url');
-		transport.send(clientRequest).catch(function(reason) {
-			assert.ok(reason instanceof Error);
-			done();
-		});
-		this.requests[0].abort();
-	});
-
-	it('should parse request query string', function(done) {
-		var transport = new AjaxTransport();
-		var clientRequest = new ClientRequest();
-		clientRequest.url('/url?foo=1');
-		clientRequest.params().add('query', 1);
-		clientRequest.params().add('query', ' ');
-		transport.request(
-			clientRequest.url(), clientRequest.method(), null, null,
-			clientRequest.params(), null, false).then(function(xhrResponse) {
-			assert.strictEqual('/url?foo=1&query=1&query=%20', xhrResponse.url);
-			done();
-		});
-		this.requests[0].respond(200);
-	});
-
-	it('should parse request query string without params', function(done) {
-		var transport = new AjaxTransport();
-		var clientRequest = new ClientRequest();
-		clientRequest.url('/url?foo=1');
-		transport.request(clientRequest.url(), clientRequest.method()).then(function(xhrResponse) {
-			assert.strictEqual('/url?foo=1', xhrResponse.url);
-			done();
-		});
-		this.requests[0].respond(200);
-	});
-
-	it('should cancel request if given timeout is reached', function(done) {
-		var transport = new AjaxTransport();
-		var clientRequest = new ClientRequest();
-		clientRequest.url('/url?foo=1');
-		transport.request(
-			clientRequest.url(),
-			clientRequest.method(),
-			null,
-			null,
-			null,
-			100,
-			false
-		).catch(function() {
-			done();
-		});
 	});
 });
