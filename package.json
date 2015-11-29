@@ -4,7 +4,7 @@
   "description": "Launchpad Api",
   "main": "./build/node/envs/node",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test:node && gulp test:coverage",
     "postinstall": "./node_modules/.bin/bower install"
   },
   "keywords": [
@@ -15,6 +15,7 @@
     "url": "http://github.com/liferay-apps/api.js.git"
   },
   "dependencies": {
+    "socket.io-client": "^1.3.7",
     "request": "^2.67.0"
   },
   "devDependencies": {
