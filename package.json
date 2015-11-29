@@ -4,6 +4,7 @@
   "description": "Launchpad Api",
   "scripts": {
     "test": "gulp test"
+    "postinstall": "./node_modules/.bin/bower install"
   },
   "keywords": [
     "metal"
@@ -13,6 +14,7 @@
     "url": "http://github.com/liferay-apps/api.js.git"
   },
   "devDependencies": {
+    "bower": "^1.6.8",
     "chai": "^2.3.0",
     "gulp": "^3.8.11",
     "gulp-metal": "^0.4.0",
