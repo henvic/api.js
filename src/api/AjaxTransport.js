@@ -3,7 +3,7 @@
 import Transport from './Transport';
 import Util from './Util';
 import ClientResponse from './ClientResponse';
-import CancellablePromise from 'bower:metal-promise/src/promise/Promise';
+import {CancellablePromise} from 'bower:metal-promise/src/promise/Promise';
 
 /**
  * Provides a convenient interface for data transport.
