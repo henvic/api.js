@@ -61,6 +61,17 @@ describe('Launchpad', function() {
 		assert.ok(client instanceof Launchpad);
 	});
 
+	it('should set / get base path', function() {
+		Launchpad.base('http://foo.com/');
+		assert.strictEqual('http://foo.com/', Launchpad.base());
+	});
+
+	it('should create URL with base path', function() {
+		Launchpad.base('http://example.org/');
+		var service = Launchpad.url('/service');
+		assert.strictEqual('http://example.org/service', service.url());
+	});
+
 	it('should change full url', function() {
 		var transport = new Transport();
 		var parent = Launchpad.url('http://other:123').use(transport);

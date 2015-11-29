@@ -20,7 +20,8 @@ class Launchpad {
 		}
 
 		this.body_ = null;
-		this.url_ = Util.joinPaths(arguments[0] || '', arguments[1] || '');
+		this.base_ = arguments[0] || '';
+		this.url_ = Util.joinPaths(this.base_, arguments[1] || '');
 		this.headers_ = new MultiMap();
 		this.params_ = new MultiMap();
 
@@ -33,6 +34,10 @@ class Launchpad {
 	 * Static factory for creating launchpad client.
 	 */
 	static url(url) {
+		if (this.base_ && url && url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
+			url = Util.joinPaths(this.base_, url);
+		}
+
 		return new Launchpad(url).use(this.customTransport_);
 	}
 
@@ -42,6 +47,20 @@ class Launchpad {
 	use(transport) {
 		this.customTransport_ = transport;
 		return this;
+	}
+
+	/**
+	 * Fluent getter and setter for base path.
+	 *
+	 * @param {string} base
+	 * @chainable Chainable when used for setter.
+	 */
+	static base(path) {
+		if (path) {
+			this.base_ = path;
+			return this;
+		}
+		return this.base_ || '';
 	}
 
 	/**
