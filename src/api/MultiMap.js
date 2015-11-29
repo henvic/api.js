@@ -1,15 +1,12 @@
 'use strict';
 
-import Disposable from 'bower:metal/src/disposable/Disposable';
-
 /**
  * Case insensitive string Multimap implementation. Allows multiple values for
  * the same key name.
  */
-class MultiMap extends Disposable {
+class MultiMap {
 
 	constructor() {
-		super();
 		this.keys = {};
 		this.values = {};
 	}
@@ -44,13 +41,6 @@ class MultiMap extends Disposable {
 	 */
 	contains(name) {
 		return name.toLowerCase() in this.values;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	disposeInternal() {
-		this.values = null;
 	}
 
 	/**
