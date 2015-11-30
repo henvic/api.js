@@ -1,10 +1,8 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import Transport from './Transport';
 import Ajax from 'bower:metal-ajax/src/Ajax';
 import ClientResponse from './ClientResponse';
-import { CancellablePromise as Promise } from 'bower:metal-promise/src/promise/Promise';
 
 /**
  * The implementation of an ajax transport to be used with {@link Launchpad}.
@@ -30,7 +28,6 @@ class AjaxTransport extends Transport {
 			return clientResponse;
 		});
 	}
-
 }
 
 export default AjaxTransport;
