@@ -22,6 +22,23 @@ describe('Launchpad', function() {
 		this.xhr.restore();
 	});
 
+	it('should set / get base path', function() {
+		Launchpad.base('http://foo.com/');
+		assert.strictEqual('http://foo.com/', Launchpad.base());
+	});
+
+	it('should create URL with base path', function() {
+		Launchpad.base('http://example.org/');
+		assert.strictEqual('http://example.org/service', Launchpad.url('/service').url());
+		assert.strictEqual('http://example.org/sys', Launchpad.url('/sys').url());
+	});
+
+	it('should create full URLs outside base path', function() {
+		Launchpad.base('https://example.org/');
+		assert.strictEqual('http://example.com/sys', Launchpad.url('http://example.com/sys').url());
+		assert.strictEqual('https://example.net/sys', Launchpad.url('https://example.net/sys').url());
+	});
+
 	it('should throws exception when socket.io is not loaded', function() {
 		assert.throws(function() {
 			Launchpad.url('/url').watch();

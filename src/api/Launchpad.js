@@ -36,6 +36,7 @@ class Launchpad {
 
 		this.auth_ = null;
 		this.body_ = null;
+		this.base_ = url || '';
 		this.url_ = Util.joinPaths(url || '', ...paths);
 		this.headers_ = new MultiMap();
 		this.params_ = new MultiMap();
@@ -72,6 +73,20 @@ class Launchpad {
 			this.auth_ = Auth.create(authOrTokenOrUsername, opt_password);
 		}
 		return this;
+	}
+
+	/**
+	 * Fluent getter and setter for base path.
+	 *
+	 * @param {string} base
+	 * @chainable Chainable when used for setter.
+	 */
+	static base(path) {
+		if (path) {
+			this.base_ = path;
+			return this;
+		}
+		return this.base_ || '';
 	}
 
 	/**
@@ -455,6 +470,10 @@ class Launchpad {
 	 * @param {string} url The url that the client should use for sending requests.
 	 */
 	static url(url) {
+		if (this.base_ && url && url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
+			url = Util.joinPaths(this.base_, url);
+		}
+
 		return new Launchpad(url).use(this.customTransport_);
 	}
 
