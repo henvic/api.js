@@ -184,7 +184,7 @@ class Launchpad {
 			body = null;
 		}
 
-		if (body instanceof FormData) {
+		if (typeof FormData !== 'undefined' && body instanceof FormData) {
 			clientRequest.headers().remove('content-type');
 		} else if (body instanceof Embodied) {
 			clientRequest.body(body.toString());
