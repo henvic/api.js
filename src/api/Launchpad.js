@@ -1,7 +1,8 @@
 'use strict';
 
 import core from 'bower:metal/src/core';
-import Auth from '../api/Auth';
+import Auth from './Auth';
+import Base64 from '../crypt/Base64';
 import Embodied from '../api-query/Embodied';
 import Filter from '../api-query/Filter';
 import Query from '../api-query/Query';
@@ -403,7 +404,7 @@ class Launchpad {
 			clientRequest.header('Authorization', 'Bearer ' + this.auth_.token());
 		} else {
 			var credentials = this.auth_.username() + ':' + this.auth_.password();
-			clientRequest.header('Authorization', 'Basic ' + btoa(credentials));
+			clientRequest.header('Authorization', 'Basic ' + Base64.encodeString(credentials));
 		}
 	}
 
