@@ -1,6 +1,6 @@
 'use strict';
 
-import Auth from '../api/Auth';
+import Auth from './Auth';
 import Embodied from '../api-query/Embodied';
 import Filter from '../api-query/Filter';
 import Query from '../api-query/Query';
@@ -417,7 +417,15 @@ class Launchpad {
 			clientRequest.header('Authorization', 'Bearer ' + this.auth_.token());
 		} else {
 			var credentials = this.auth_.username() + ':' + this.auth_.password();
-			clientRequest.header('Authorization', 'Basic ' + btoa(credentials));
+			var basic;
+
+			if (typeof btoa === 'function') {
+				basic = btoa(credentials);
+			} else {
+				basic = new Buffer(credentials.toString(), 'binary');
+			}
+
+			clientRequest.header('Authorization', 'Basic ' + basic);
 		}
 	}
 
