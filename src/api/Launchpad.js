@@ -9,6 +9,8 @@ import ClientRequest from './ClientRequest';
 import Util from './Util';
 import MultiMap from './MultiMap';
 
+var io;
+
 /**
  * The main class for making api requests. Sending requests returns a promise that is
  * resolved when the response arrives. Usage example:
@@ -454,6 +456,14 @@ class Launchpad {
 	}
 
 	/**
+	 * Sets the socket transport
+	 * @param {Object} socket implementation object.
+	 */
+	static socket(socket) {
+		io = socket;
+	}
+
+	/**
 	 * Adds a sort query to this request's body.
 	 * @param {string} field The field that the query should be sorted by.
 	 * @param {string=} opt_direction The direction the sort operation should use.
@@ -508,7 +518,7 @@ class Launchpad {
 	 * @return {!io} Socket IO reference. Server events can be listened on it.
 	 */
 	watch(opt_params, opt_options) {
-		if (typeof Launchpad.io === 'undefined') {
+		if (!io) {
 			throw new Error('Socket.io client not loaded');
 		}
 
@@ -522,7 +532,7 @@ class Launchpad {
 		};
 		opt_options.path = opt_options.path || url[1];
 
-		return Launchpad.io(url[0] + '?url=' + encodeURIComponent(url[1] + url[2]), opt_options);
+		return io(url[0] + '?url=' + encodeURIComponent(url[1] + url[2]), opt_options);
 	}
 
 	/**
