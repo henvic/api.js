@@ -10,6 +10,8 @@ import ClientRequest from './ClientRequest';
 import Ajax from 'bower:metal-ajax/src/Ajax';
 import MultiMap from 'bower:metal-multimap/src/MultiMap';
 
+var io;
+
 /**
  * The main class for making api requests. Sending requests returns a promise that is
  * resolved when the response arrives. Usage example:
@@ -437,6 +439,14 @@ class Launchpad {
 		var clientRequest = this.createClientRequest_(method, body);
 
 		return transport.send(clientRequest).then(this.decode);
+	}
+
+	/**
+	 * Sets the socket transport
+	 * @param {Object} socket implementation object.
+	 */
+	static socket(socket) {
+		io = socket;
 	}
 
 	/**
