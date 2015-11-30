@@ -84,13 +84,6 @@ describe('MultiMap', function() {
 		assert.strictEqual('{"key1":[1,1]}', map.toString());
 	});
 
-	it('should dispose map', function() {
-		var map = new MultiMap();
-		map.add('key1', 1);
-		map.dispose();
-		assert.ok(!map.values);
-	});
-
 	it('should key name be case insensitive', function() {
 		var map = new MultiMap();
 		map.add('KEY1', 1);

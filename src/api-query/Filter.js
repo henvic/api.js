@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import Embodied from './Embodied';
 import FilterBody from './FilterBody';
 import Geo from './Geo';
@@ -203,7 +202,7 @@ class Filter extends Embodied {
 	 * @static
 	 */
 	static fuzzyInternal_(operator, fieldOrQuery, opt_queryOrFuzziness, opt_fuzziness) {
-		var arg2IsString = core.isString(opt_queryOrFuzziness);
+		var arg2IsString = typeof opt_queryOrFuzziness === 'string';
 
 		var value = {
 			query: arg2IsString ? opt_queryOrFuzziness : fieldOrQuery
@@ -249,8 +248,8 @@ class Filter extends Embodied {
 	 * @static
 	 */
 	static match(fieldOrQuery, opt_query) {
-		var field = core.isString(opt_query) ? fieldOrQuery : Filter.ALL;
-		var query = core.isString(opt_query) ? opt_query : fieldOrQuery;
+		var field = typeof opt_query === 'string' ? fieldOrQuery : Filter.ALL;
+		var query = typeof opt_query === 'string' ? opt_query : fieldOrQuery;
 		return Filter.field(field, 'match', query);
 	}
 
@@ -274,8 +273,8 @@ class Filter extends Embodied {
 	 * @static
 	 */
 	static phrase(fieldOrQuery, opt_query) {
-		var field = core.isString(opt_query) ? fieldOrQuery : Filter.ALL;
-		var query = core.isString(opt_query) ? opt_query : fieldOrQuery;
+		var field = typeof opt_query === 'string' ? fieldOrQuery : Filter.ALL;
+		var query = typeof opt_query === 'string' ? opt_query : fieldOrQuery;
 		return Filter.field(field, 'phrase', query);
 	}
 
@@ -359,9 +358,9 @@ class Filter extends Embodied {
 	 * @static
 	 */
 	static similar(fieldOrQuery, query) {
-		var field = core.isString(query) ? fieldOrQuery : Filter.ALL;
+		var field = typeof query === 'string' ? fieldOrQuery : Filter.ALL;
 		var value = {
-			query: core.isString(query) ? query : fieldOrQuery
+			query: typeof query === 'string' ? query : fieldOrQuery
 		};
 		return Filter.field(field, 'similar', value);
 	}

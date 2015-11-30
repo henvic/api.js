@@ -12,7 +12,6 @@
     "test"
   ],
   "dependencies": {
-    "metal": "metal/metal.js#master",
     "metal-promise": "metal/metal-promise#master"
   }
 }

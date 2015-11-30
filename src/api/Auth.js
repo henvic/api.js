@@ -1,7 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
-
 /**
  * Class responsible for storing authorization information.
  */
@@ -15,8 +13,8 @@ class Auth {
 	 * @constructor
 	 */
 	constructor(tokenOrUsername, opt_password = null) {
-		this.token_ = core.isString(opt_password) ? null : tokenOrUsername;
-		this.username_ = core.isString(opt_password) ? tokenOrUsername : null;
+		this.token_ = (typeof opt_password === 'string') ? null : tokenOrUsername;
+		this.username_ = (typeof opt_password === 'string') ? tokenOrUsername : null;
 		this.password_ = opt_password;
 	}
 

@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import ClientMessage from './ClientMessage';
 
 /**
@@ -34,7 +33,7 @@ class ClientResponse extends ClientMessage {
 	 * @chainable Chainable when used as setter.
 	 */
 	statusCode(opt_statusCode) {
-		if (core.isDef(opt_statusCode)) {
+		if (opt_statusCode) {
 			this.statusCode_ = opt_statusCode;
 			return this;
 		}
@@ -51,7 +50,7 @@ class ClientResponse extends ClientMessage {
 	 * @chainable Chainable when used as setter.
 	 */
 	statusText(opt_statusText) {
-		if (core.isDef(opt_statusText)) {
+		if (opt_statusText) {
 			this.statusText_ = opt_statusText;
 			return this;
 		}

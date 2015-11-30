@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import Embodied from './Embodied';
 
 /**
@@ -16,10 +15,10 @@ class Range extends Embodied {
 	 */
 	constructor(from, opt_to) {
 		super();
-		if (core.isDefAndNotNull(from)) {
+		if (from !== undefined && from !== null) {
 			this.body_.from = from;
 		}
-		if (core.isDefAndNotNull(opt_to)) {
+		if (opt_to !== undefined && opt_to !== null) {
 			this.body_.to = opt_to;
 		}
 	}

@@ -1,6 +1,5 @@
 'use strict';
 
-import core from 'bower:metal/src/core';
 import Embodied from './Embodied';
 import Filter from './Filter';
 import Aggregation from './Aggregation';
@@ -147,7 +146,7 @@ class Query extends Embodied {
 			name: name,
 			operator: aggregation.getOperator()
 		};
-		if (core.isDefAndNotNull(aggregation.getValue())) {
+		if (aggregation.getValue() !== undefined && aggregation.getValue() !== null) {
 			value[field].value = aggregation.getValue();
 		}
 
