@@ -241,6 +241,10 @@ class Launchpad {
 	 * @chainable
 	 */
 	form(name, value) {
+		if (typeof FormData === 'undefined') {
+			throw new Error('form() is only available when FormData API is available.');
+		}
+
 		if (!this.formData_) {
 			this.formData_ = new FormData();
 		}
