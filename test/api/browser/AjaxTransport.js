@@ -1,8 +1,8 @@
 'use strict';
 
-import AjaxTransport from '../../src/api/AjaxTransport';
-import ClientRequest from '../../src/api/ClientRequest';
-import RequestMock from '../fixtures/RequestMock';
+import AjaxTransport from '../../../src/api/browser/AjaxTransport';
+import ClientRequest from '../../../src/api/ClientRequest';
+import RequestMock from '../../fixtures/RequestMock';
 
 var TransportRequestMock = RequestMock.get();
 

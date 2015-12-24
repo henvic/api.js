@@ -1,8 +1,8 @@
 'use strict';
 
-import Transport from './Transport';
 import Ajax from 'bower:metal-ajax/src/Ajax';
-import ClientResponse from './ClientResponse';
+import Transport from '../Transport';
+import ClientResponse from '../ClientResponse';
 
 /**
  * The implementation of an ajax transport to be used with {@link Launchpad}.
