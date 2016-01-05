@@ -4,6 +4,7 @@
   "description": "Launchpad Api",
   "scripts": {
     "test": "gulp test"
+    "postinstall": "bower install",
   },
   "keywords": [
     "metal"
